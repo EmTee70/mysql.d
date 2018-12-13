@@ -41,12 +41,12 @@ class Mysql {
     }
 
     private void initMysql () {
-        mysql = enforceEx!(MysqlDatabaseException)(mysql_init(null), "Couldn't init mysql");
+        mysql = enforce!MysqlDatabaseException(mysql_init(null), "Couldn't init mysql");
         setReconnect(true);
     }
 
     void connect(string host, uint port, string user, string pass, string db, string unixSocket, string charset = null) {
-        enforceEx!(MysqlDatabaseException)(
+        enforce!MysqlDatabaseException(
             mysql_real_connect(mysql,
                 toCstring(host),
                 toCstring(user),
@@ -152,7 +152,7 @@ class Mysql {
 
     // MYSQL API call
     MysqlResult queryImpl(string sql) {
-        enforceEx!(MysqlDatabaseException)(
+        enforce!MysqlDatabaseException(
             !mysql_query(mysql, toCstring(sql)),
         error() ~ " :::: " ~ sql);
 
